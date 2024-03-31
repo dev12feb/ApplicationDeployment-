@@ -22,12 +22,9 @@ stages:
         - task: CmdLine@2
           inputs:
             script: 'npm run build'
-        - task: CopyFiles@2
-          inputs:
-            TargetFolder: $(Build.ArtifactStagingDirectory)
         - task: PublishBuildArtifacts@1
           inputs:
-            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+            PathtoPublish: '$(Build.SourcesDirectory)'
             ArtifactName: 'Application'
             publishLocation: 'Container'
         
