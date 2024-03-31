@@ -27,4 +27,39 @@ stages:
             PathtoPublish: '$(Build.SourcesDirectory)/build'
             ArtifactName: 'Application'
             publishLocation: 'Container'
-        
+
+  - stage: DeployStage
+    dependsOn: BuildStage
+    displayName: Deploy Stage
+    jobs:
+      - job: DeployJob
+        displayName: Deploy Job
+        steps:
+        - task: DownloadBuildArtifacts@1
+          inputs:
+            buildType: 'current'
+            downloadType: 'single'
+            artifactName: 'Application'
+            downloadPath: '$(Build.ArtifactStagingDirectory)'
+        - task: CopyFilesOverSSH@0
+          inputs:
+            sshEndpoint: 'DivyanshSSH'
+            sourceFolder: '$(Build.ArtifactStagingDirectory)/Application'
+            contents: '**'
+            targetFolder: '/tmp/application/'
+            readyTimeout: '20000'
+        - task: CmdLine@2
+          inputs:
+            script: 'sudo apt-get install -y nginx'
+        - task: SSH@0
+          inputs:
+            sshEndpoint: 'DivyanshSSH'
+            runOptions: 'commands'
+            commands: 'sudo cp -r /tmp/application/* /var/www/html/'
+            readyTimeout: '20000'
+        - task: SSH@0
+          inputs:
+            sshEndpoint: 'DivyanshSSH'
+            runOptions: 'commands'
+            commands: 'sudo systemctl restart nginx'
+            readyTimeout: '20000'
