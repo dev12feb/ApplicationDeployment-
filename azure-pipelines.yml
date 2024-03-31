@@ -24,7 +24,7 @@ stages:
             script: 'npm run build'
         - task: PublishBuildArtifacts@1
           inputs:
-            PathtoPublish: '$(Build.SourcesDirectory)/divyansh'
+            PathtoPublish: '$(Build.SourcesDirectory)/build'
             ArtifactName: 'Application'
             publishLocation: 'Container'
         
