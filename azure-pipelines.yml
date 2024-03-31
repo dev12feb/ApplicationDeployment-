@@ -52,7 +52,7 @@ stages:
           inputs:
             sshEndpoint: 'DivyanshSSH'
             runOptions: 'commands'
-            commands: 'sudo apt install nginx'
+            commands: 'sudo apt-get install nginx'
             readyTimeout: '20000'
         - task: SSH@0
           inputs:
