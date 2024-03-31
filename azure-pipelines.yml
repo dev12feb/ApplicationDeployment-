@@ -24,7 +24,7 @@ stages:
             script: 'npm run build'
         - task: PublishBuildArtifacts@1
           inputs:
-            PathtoPublish: '$(Build.SourcesDirectory)/build'
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
             ArtifactName: 'Application'
             publishLocation: 'Container'
         
